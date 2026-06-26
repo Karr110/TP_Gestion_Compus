@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Materia - Pañol</title>
+    <style>
+        :root { --azul-celeste-dark: #006691; --azul-celeste: #009cdb; --blanco: #ffffff; --gris-fondo: #f4f7f9; --gris-texto: #334155; --gris-borde: #cbd5e1; --naranja: #ff7a00; --rojo-alerta: #ef4444; --rojo-alerta-hover: #dc2626; --rojo-fondo: #fef2f2; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--gris-fondo); color: var(--gris-texto); display: flex; min-height: 100vh; flex-direction: column; }
+        header { background-color: var(--blanco); border-bottom: 3px solid var(--azul-celeste); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-simb { width: 38px; height: 38px; background-color: var(--azul-celeste-dark); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--blanco); font-weight: bold; }
+        .logo-texto { font-size: 18px; font-weight: 700; color: var(--azul-celeste-dark); }
+        .logo-texto span { color: var(--naranja); }
+        .main-container { max-width: 550px; width: 100%; margin: 60px auto; padding: 0 20px; flex: 1; }
+        .delete-card { background-color: var(--blanco); border-radius: 8px; border: 1px solid var(--gris-borde); border-top: 5px solid var(--rojo-alerta); padding: 30px; text-align: center; }
+        .icon-container { color: var(--rojo-alerta); margin-bottom: 15px; }
+        h1 { font-size: 19px; color: #1e293b; margin-bottom: 12px; font-weight: 600; }
+        .warning-text { font-size: 14px; color: #64748b; margin-bottom: 20px; }
+        .resource-box { background-color: var(--rojo-fondo); border: 1px dashed #fca5a5; border-radius: 6px; padding: 15px; font-size: 16px; font-weight: 600; color: #991b1b; margin-bottom: 25px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .actions-row { display: flex; gap: 12px; }
+        .btn-eliminar { flex: 1; background-color: var(--rojo-alerta); color: var(--blanco); border: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .btn-eliminar:hover { background-color: var(--rojo-alerta-hover); }
+        .btn-cancelar { flex: 1; border: 1px solid var(--gris-borde); color: #64748b; text-decoration: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600; text-align: center; }
+        .btn-cancelar:hover { background-color: #f8fafc; }
+        footer { background-color: #1e293b; color: #94a3b8; text-align: center; padding: 20px; font-size: 13px; margin-top: auto; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container"><div class="logo-simb">P</div><div class="logo-texto">Inventario<span>Pañol</span></div></div>
+    </header>
+    <main class="main-container">
+        <div class="delete-card">
+            <div class="icon-container">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg>
+            </div>
+            <h1>¿Estás seguro que querés eliminar esta materia?</h1>
+            <p class="warning-text">Se quitará del sistema. Ten en cuenta si hay préstamos vinculados a ella.</p>
+            <div class="resource-box">
+                {{ object.nombre }}
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <div class="actions-row">
+                    <button type="submit" class="btn-eliminar">Sí, eliminar</button>
+                    <a href="{% url 'materias:materia_list' %}" class="btn-cancelar">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer><p>Sistema de Gestión de Recursos Tecnológicos &copy; 2026</p></footer>
+</body>
+</html>

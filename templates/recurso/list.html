@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Recursos - Pañol</title>
+    <style>
+        :root {
+            --azul-celeste-dark: #006691;
+            --azul-celeste: #009cdb;
+            --azul-celeste-light: #e6f5fc;
+            --naranja: #ff7a00;
+            --naranja-hover: #e06b00;
+            --blanco: #ffffff;
+            --gris-fondo: #f4f7f9;
+            --gris-texto: #334155;
+            --gris-borde: #cbd5e1;
+            --rojo-del: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--gris-fondo); color: var(--gris-texto); display: flex; min-height: 100vh; flex-direction: column; }
+        
+        header { background-color: var(--blanco); border-bottom: 3px solid var(--azul-celeste); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-simb { width: 38px; height: 38px; background-color: var(--azul-celeste-dark); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--blanco); font-weight: bold; }
+        .logo-texto { font-size: 18px; font-weight: 700; color: var(--azul-celeste-dark); }
+        .logo-texto span { color: var(--naranja); }
+
+        .main-container { max-width: 1200px; width: 100%; margin: 30px auto; padding: 0 20px; flex: 1; }
+        
+        .panel-header { background-color: var(--blanco); border-radius: 8px; padding: 20px; border-left: 5px solid var(--naranja); box-shadow: 0 2px 4px rgba(0,0,0,0.02); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .panel-info h1 { font-size: 22px; color: var(--azul-celeste-dark); }
+        .panel-info p { font-size: 14px; color: #64748b; }
+
+        .btn-agregar { background-color: var(--naranja); color: var(--blanco); text-decoration: none; padding: 10px 18px; border-radius: 6px; font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: background-color 0.2s; box-shadow: 0 2px 4px rgba(255, 122, 0, 0.2); }
+        .btn-agregar:hover { background-color: var(--naranja-hover); }
+
+        .table-container { background-color: var(--blanco); border-radius: 8px; border: 1px solid var(--gris-borde); box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02); overflow-x: auto; }
+        .panol-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+        .panol-table th { background-color: var(--azul-celeste-light); color: var(--azul-celeste-dark); padding: 15px 18px; font-weight: 600; border-bottom: 2px solid var(--gris-borde); text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+        .panol-table td { padding: 14px 18px; border-bottom: 1px solid var(--gris-borde); vertical-align: middle; }
+        .panol-table tbody tr:hover { background-color: #f8fafc; }
+
+        .recurso-cell { display: flex; align-items: center; gap: 10px; font-weight: 600; color: #1e293b; }
+        .recurso-icon { color: var(--azul-celeste); display: flex; align-items: center; }
+
+        .actions-group { display: flex; gap: 8px; }
+        .btn-actualizar, .btn-eliminar { text-decoration: none; padding: 6px 12px; border-radius: 4px; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; transition: all 0.2s; background: transparent; }
+        
+        .btn-actualizar { border: 1px solid var(--azul-celeste); color: var(--azul-celeste-dark); }
+        .btn-actualizar:hover { background-color: var(--azul-celeste); color: var(--blanco); }
+        
+        .btn-eliminar { border: 1px solid var(--rojo-del); color: var(--rojo-del); }
+        .btn-eliminar:hover { background-color: var(--rojo-del); color: var(--blanco); }
+
+        .table-empty { text-align: center; padding: 40px !important; color: #64748b; }
+        footer { background-color: #1e293b; color: #94a3b8; text-align: center; padding: 20px; font-size: 13px; margin-top: auto; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container"><div class="logo-simb">P</div><div class="logo-texto">Inventario<span>Pañol</span></div></div>
+    </header>
+
+    <main class="main-container">
+        <div class="panel-header">
+            <div class="panel-info">
+                <h1>Artículos e Infraestructura</h1>
+                <p>Inventario generalizado de dispositivos tecnológicos, cables y componentes físicos.</p>
+            </div>
+            <a href="{% url 'recursos:recurso_create' %}" class="btn-agregar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Registrar Recurso
+            </a>
+        </div>
+
+        <div class="table-container">
+            <table class="panol-table">
+                <thead>
+                    <tr>
+                        <th>Nro. de Serie / ID</th>
+                        <th>Descripción del Recurso</th>
+                        <th style="width: 220px; text-align: center;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for recurso in recursos %}
+                        <tr>
+                            <td style="color: #64748b; font-family: monospace;">#REC-{{ forloop.counter|stringformat:"04d" }}</td>
+                            <td>
+                                <div class="recurso-cell">
+                                    <div class="recurso-icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="20" x2="22" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
+                                    </div>
+                                    <span>{{ recurso.nombre }}</span>
+                                </div>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="actions-group">
+                                    <a href="{% url 'recursos:recurso_update' recurso.id %}" class="btn-actualizar">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                                        Actualizar
+                                    </a>
+                                    <a href="{% url 'recursos:recurso_delete' recurso.id %}" class="btn-eliminar">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                        Eliminar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="3" class="table-empty">
+                                <p>No existen recursos físicos listados en la base de datos del establecimiento.</p>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer><p>Sistema de Gestión de Recursos Tecnológicos &copy; 2026</p></footer>
+</body>
+</html>

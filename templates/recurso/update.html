@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Recurso - Pañol</title>
+    <style>
+        :root { --azul-celeste-dark: #006691; --azul-celeste: #009cdb; --azul-celeste-light: #e6f5fc; --naranja: #ff7a00; --blanco: #ffffff; --gris-fondo: #f4f7f9; --gris-texto: #334155; --gris-borde: #cbd5e1; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--gris-fondo); color: var(--gris-texto); display: flex; min-height: 100vh; flex-direction: column; }
+        header { background-color: var(--blanco); border-bottom: 3px solid var(--azul-celeste); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-simb { width: 38px; height: 38px; background-color: var(--azul-celeste-dark); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--blanco); font-weight: bold; }
+        .logo-texto { font-size: 18px; font-weight: 700; color: var(--azul-celeste-dark); }
+        .logo-texto span { color: var(--naranja); }
+        .main-container { max-width: 600px; width: 100%; margin: 40px auto; padding: 0 20px; flex: 1; }
+        .form-card { background-color: var(--blanco); border-radius: 8px; border: 1px solid var(--gris-borde); border-top: 5px solid var(--azul-celeste); padding: 30px; }
+        h1 { font-size: 22px; color: var(--azul-celeste-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .subtitle { font-size: 14px; color: #64748b; margin-bottom: 25px; }
+        form p { margin-bottom: 20px; display: flex; flex-direction: column; gap: 6px; }
+        form label { font-size: 14px; font-weight: 600; color: var(--azul-celeste-dark); }
+        form input, form select { width: 100%; padding: 10px 14px; border: 1px solid var(--gris-borde); border-radius: 6px; font-size: 14px; }
+        form input:focus { outline: none; border-color: var(--azul-celeste); box-shadow: 0 0 0 3px var(--azul-celeste-light); }
+        .actions-row { display: flex; gap: 12px; margin-top: 30px; }
+        .btn-guardar { flex: 1; background-color: var(--azul-celeste); color: var(--blanco); border: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .btn-guardar:hover { background-color: var(--azul-celeste-dark); }
+        .btn-cancelar { flex: 1; border: 1px solid var(--gris-borde); color: #64748b; text-decoration: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600; text-align: center; }
+        .btn-cancelar:hover { background-color: #f8fafc; }
+        footer { background-color: #1e293b; color: #94a3b8; text-align: center; padding: 20px; font-size: 13px; margin-top: auto; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container"><div class="logo-simb">P</div><div class="logo-texto">Inventario<span>Pañol</span></div></div>
+    </header>
+    <main class="main-container">
+        <div class="form-card">
+            <h1>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                Actualizar Recurso
+            </h1>
+            <p class="subtitle">Modifica el estado o los componentes de la ficha técnica actual.</p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="actions-row">
+                    <button type="submit" class="btn-guardar">Guardar cambios</button>
+                    <a href="{% url 'recursos:recurso_list' %}" class="btn-cancelar">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer><p>Sistema de Gestión de Recursos Tecnológicos &copy; 2026</p></footer>
+</body>
+</html>
