@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import CursoListView, CursoCreateView, CursoUpdateView, CursoDeleteView
 
-app_name = "cursos"
+app_name = "curso"
 
 urlpatterns = [
     path('', CursoListView.as_view(), name='curso_list'),
