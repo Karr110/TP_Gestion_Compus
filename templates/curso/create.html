@@ -1,156 +1,77 @@
-{% extends 'base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Curso - Pañol Tecnológico</title>
+    <style>
+        :root {
+            --azul-celeste-dark: #006691;
+            --azul-celeste: #009cdb;
+            --azul-celeste-light: #e6f5fc;
+            --naranja: #ff7a00;
+            --naranja-hover: #e06b00;
+            --blanco: #ffffff;
+            --gris-fondo: #f4f7f9;
+            --gris-texto: #334155;
+            --gris-borde: #cbd5e1;
+        }
 
-{% block title %}Registrar Nuevo Curso - Sistema de Gestión de Pañol{% endblock %}
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--gris-fondo); color: var(--gris-texto); display: flex; min-height: 100vh; flex-direction: column; }
+        
+        header { background-color: var(--blanco); border-bottom: 3px solid var(--azul-celeste); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-simb { width: 38px; height: 38px; background-color: var(--azul-celeste-dark); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--blanco); font-weight: bold; }
+        .logo-texto { font-size: 18px; font-weight: 700; color: var(--azul-celeste-dark); }
+        .logo-texto span { color: var(--naranja); }
 
-{% block extra_css %}
-<style>
-    /* Estilos específicos para el formulario de Creación */
-    .form-container {
-        max-width: 650px;
-        margin: 0 auto;
-    }
-    
-    .form-header {
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid #e2e8f0;
-    }
-    
-    .form-header h1 {
-        font-size: 1.75rem;
-        color: #006691;
-        font-weight: 700;
-        margin-bottom: 0.25rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-    }
-    
-    .form-header p {
-        color: #64748b;
-        font-size: 0.95rem;
-    }
-    
-    .form-card {
-        background: #ffffff;
-        border-radius: 8px;
-        border: 1px solid #cbd5e1;
-        border-top: 5px solid #ff7a00;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        padding: 2.25rem;
-    }
-    
-    .form-group-container {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-    
-    .form-card form p {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        margin-bottom: 1.25rem;
-    }
-    
-    .form-card form label {
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: #006691;
-    }
-    
-    .form-card form input[type="text"],
-    .form-card form select {
-        width: 100%;
-        padding: 0.65rem 0.85rem;
-        border: 1px solid #cbd5e1;
-        border-radius: 6px;
-        font-size: 0.95rem;
-        color: #334155;
-        background-color: #ffffff;
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-    
-    .form-card form input[type="text"]:focus,
-    .form-card form select:focus {
-        outline: none;
-        border-color: #009cdb;
-        box-shadow: 0 0 0 3px rgba(0, 156, 219, 0.15);
-    }
-    
-    .form-actions-row {
-        display: flex;
-        justify-content: flex-end;
-        gap: 1rem;
-        padding-top: 1.5rem;
-        border-top: 1px solid #e2e8f0;
-    }
-    
-    .btn-submit {
-        background-color: #ff7a00;
-        color: #ffffff;
-        padding: 0.65rem 1.5rem;
-        border-radius: 6px;
-        font-weight: 600;
-        border: none;
-        cursor: pointer;
-        font-size: 0.95rem;
-        transition: background-color 0.15s ease;
-    }
-    
-    .btn-submit:hover {
-        background-color: #e06b00;
-    }
-    
-    .btn-cancel {
-        background-color: #ffffff;
-        color: #64748b;
-        padding: 0.65rem 1.5rem;
-        border-radius: 6px;
-        font-weight: 600;
-        border: 1px solid #cbd5e1;
-        text-decoration: none;
-        font-size: 0.95rem;
-        text-align: center;
-        transition: background-color 0.15s ease, color 0.15s ease;
-    }
-    
-    .btn-cancel:hover {
-        background-color: #f8fafc;
-        color: #334155;
-    }
-</style>
-{% endblock %}
+        .main-container { max-width: 600px; width: 100%; margin: 40px auto; padding: 0 20px; flex: 1; }
+        
+        /* Tarjeta del Formulario */
+        .form-card { background-color: var(--blanco); border-radius: 8px; border: 1px solid var(--gris-borde); border-top: 5px solid var(--naranja); padding: 30px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02); }
+        h1 { font-size: 22px; color: var(--azul-celeste-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .subtitle { font-size: 14px; color: #64748b; margin-bottom: 25px; }
 
-{% block content %}
-<div class="form-container">
-    <div class="form-header">
-        <h1>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            Registrar Nuevo Curso
-        </h1>
-        <p>Ingresá los datos correspondientes para agregar una nueva división o grupo de alumnos al sistema.</p>
-    </div>
+        /* Estilo para los párrafos y campos generados por {{ form.as_p }} */
+        form p { margin-bottom: 20px; display: flex; flex-direction: column; gap: 6px; }
+        form label { font-size: 14px; font-weight: 600; color: var(--azul-celeste-dark); }
+        form input, form select, form textarea { width: 100%; padding: 10px 14px; border: 1px solid var(--gris-borde); border-radius: 6px; font-size: 14px; transition: border-color 0.2s; }
+        form input:focus { outline: none; border-color: var(--azul-celeste); box-shadow: 0 0 0 3px var(--azul-celeste-light); }
 
-    <div class="form-card">
-        <form method="post" autocomplete="off">
-            {% csrf_token %}
+        .actions-row { display: flex; gap: 12px; margin-top: 30px; }
+        .btn-guardar { flex: 1; background-color: var(--naranja); color: var(--blanco); border: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background-color 0.2s; text-align: center; }
+        .btn-guardar:hover { background-color: var(--naranja-hover); }
+        .btn-cancelar { flex: 1; border: 1px solid var(--gris-borde); color: #64748b; text-decoration: none; padding: 12px; border-radius: 6px; font-size: 14px; font-weight: 600; text-align: center; transition: background-color 0.2s; }
+        .btn-cancelar:hover { background-color: #f8fafc; }
+
+        footer { background-color: #1e293b; color: #94a3b8; text-align: center; padding: 20px; font-size: 13px; margin-top: auto; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-container"><div class="logo-simb">P</div><div class="logo-texto">Inventario<span>Pañol</span></div></div>
+    </header>
+
+    <main class="main-container">
+        <div class="form-card">
+            <h1>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Registrar Nuevo Curso
+            </h1>
+            <p class="subtitle">Ingresá el año y la división para dar de alta un curso nuevo.</p>
             
-            <div class="form-group-container">
-                {% if form %}
-                    {{ form.as_p }}
-                {% else %}
-                    <p style="color: #ef4444; font-weight: 600;">Error: El contexto de la vista no está proveyendo un formulario válido.</p>
-                {% endif %}
-            </div>
-            
-            <div class="form-actions-row">
-                <a href="{% url 'curso:curso_list' %}" class="btn-cancel">Regresar al listado</a>
-                <button type="submit" class="btn-submit">Confirmar y guardar</button>
-            </div>
-        </form>
-    </div>
-</div>
-{% endblock %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="actions-row">
+                    <button type="submit" class="btn-guardar">Guardar Curso</button>
+                    <a href="{% url 'curso:curso_list' %}" class="btn-cancelar">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <footer><p>Sistema de Gestión de Recursos Tecnológicos &copy; 2026</p></footer>
+</body>
+</html>

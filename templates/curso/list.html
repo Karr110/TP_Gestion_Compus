@@ -1,272 +1,396 @@
-{% extends 'base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Pañol Tecnológico</title>
+    <style>
+        /* Variables de color institucionales */
+        :root {
+            --azul-celeste-dark: #006691;
+            --azul-celeste: #009cdb;
+            --azul-celeste-light: #e6f5fc;
+            --naranja: #ff7a00;
+            --naranja-hover: #e06b00;
+            --blanco: #ffffff;
+            --gris-fondo: #f4f7f9;
+            --gris-texto: #334155;
+            --gris-borde: #cbd5e1;
+            --verde-ok: #10b981;
+            --rojo-del: #ef4444;
+            --rojo-del-hover: #dc2626;
+        }
 
-{% block title %}Lista de Cursos - Sistema de Gestión de Pañol{% endblock %}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-{% block extra_css %}
-<style>
-    /* Estilos específicos para la vista de listado de Cursos */
-    .page-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid #e2e8f0;
-    }
-    
-    .page-title h1 {
-        font-size: 1.75rem;
-        color: #006691;
-        font-weight: 700;
-        margin-bottom: 0.25rem;
-    }
-    
-    .page-title p {
-        color: #64748b;
-        font-size: 0.95rem;
-    }
-    
-    .btn-action-primary {
-        background-color: #ff7a00;
-        color: #ffffff;
-        padding: 0.625rem 1.25rem;
-        border-radius: 6px;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        transition: background-color 0.2s ease, transform 0.1s ease;
-        box-shadow: 0 2px 4px rgba(255, 122, 0, 0.15);
-        border: none;
-        cursor: pointer;
-    }
-    
-    .btn-action-primary:hover {
-        background-color: #e06b00;
-    }
-    
-    .btn-action-primary:active {
-        transform: scale(0.98);
-    }
-    
-    .content-card {
-        background: #ffffff;
-        border-radius: 8px;
-        border: 1px solid #cbd5e1;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        overflow: hidden;
-    }
-    
-    .table-responsive {
-        width: 100%;
-        overflow-x: auto;
-    }
-    
-    .custom-table {
-        width: 100%;
-        border-collapse: collapse;
-        text-align: left;
-        font-size: 0.925rem;
-    }
-    
-    .custom-table th {
-        background-color: #e6f5fc;
-        color: #006691;
-        padding: 1rem 1.25rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.75rem;
-        letter-spacing: 0.05em;
-        border-bottom: 2px solid #cbd5e1;
-    }
-    
-    .custom-table td {
-        padding: 1rem 1.25rem;
-        border-bottom: 1px solid #cbd5e1;
-        color: #334155;
-        vertical-align: middle;
-    }
-    
-    .custom-table tr:last-child td {
-        border-bottom: none;
-    }
-    
-    .custom-table tbody tr:hover {
-        background-color: #f8fafc;
-    }
-    
-    .id-badge {
-        font-family: monospace;
-        background-color: #f1f5f9;
-        color: #475569;
-        padding: 0.25rem 0.5rem;
-        border-radius: 4px;
-        font-size: 0.85rem;
-        border: 1px solid #e2e8f0;
-    }
-    
-    .curso-name-wrapper {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    
-    .icon-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 6px;
-        background-color: #e6f5fc;
-        color: #009cdb;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .curso-title {
-        font-weight: 600;
-        color: #1e293b;
-    }
-    
-    .actions-cell {
-        display: flex;
-        gap: 0.5rem;
-        justify-content: flex-end;
-    }
-    
-    .btn-table-edit {
-        color: #006691;
-        border: 1px solid #009cdb;
-        padding: 0.375rem 0.75rem;
-        border-radius: 4px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-        transition: all 0.2s ease;
-        background-color: transparent;
-    }
-    
-    .btn-table-edit:hover {
-        background-color: #009cdb;
-        color: #ffffff;
-    }
-    
-    .btn-table-delete {
-        color: #ef4444;
-        border: 1px solid #ef4444;
-        padding: 0.375rem 0.75rem;
-        border-radius: 4px;
-        font-size: 0.85rem;
-        font-weight: 600;
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 0.25rem;
-        transition: all 0.2s ease;
-        background-color: transparent;
-    }
-    
-    .btn-table-delete:hover {
-        background-color: #ef4444;
-        color: #ffffff;
-    }
-    
-    .empty-state {
-        padding: 4rem 2rem;
-        text-align: center;
-        color: #64748b;
-    }
-    
-    .empty-state-icon {
-        color: #cbd5e1;
-        margin-bottom: 1rem;
-    }
-    
-    .empty-state p {
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
-    }
-</style>
-{% endblock %}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--gris-fondo);
+            color: var(--gris-texto);
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
 
-{% block content %}
-<div class="page-container">
-    <div class="page-header">
-        <div class="page-title">
-            <h1>Lista de Cursos</h1>
-            <p>Visualizá, editá y registrá las distintas divisiones y años escolares del establecimiento.</p>
+        /* Barra de Navegación */
+        header {
+            background-color: var(--blanco);
+            border-bottom: 3px solid var(--azul-celeste);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-simb {
+            width: 38px;
+            height: 38px;
+            background-color: var(--azul-celeste-dark);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--blanco);
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .logo-texto {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--azul-celeste-dark);
+            letter-spacing: 0.5px;
+        }
+
+        .logo-texto span {
+            color: var(--naranja);
+        }
+
+        .user-badge {
+            background-color: var(--azul-celeste-light);
+            color: var(--azul-celeste-dark);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Contenedor Principal */
+        .main-container {
+            max-width: 1200px;
+            width: 100%;
+            margin: 30px auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        /* Encabezado del panel */
+        .panel-header {
+            background-color: var(--blanco);
+            border-radius: 8px;
+            padding: 20px;
+            border-left: 5px solid var(--naranja);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .panel-info h1 {
+            font-size: 22px;
+            color: var(--azul-celeste-dark);
+        }
+
+        .panel-info p {
+            font-size: 14px;
+            color: #64748b;
+        }
+
+        /* BOTÓN AGREGAR (Naranja) */
+        .btn-agregar {
+            background-color: var(--naranja);
+            color: var(--blanco);
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s ease;
+            box-shadow: 0 2px 4px rgba(255, 122, 0, 0.2);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-agregar:hover {
+            background-color: var(--naranja-hover);
+        }
+
+        /* Contenedor de la Tabla Responsiva */
+        .table-container {
+            background-color: var(--blanco);
+            border-radius: 8px;
+            border: 1px solid var(--gris-borde);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            overflow-x: auto;
+        }
+
+        /* Estilos de la Tabla */
+        .panol-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .panol-table th {
+            background-color: var(--azul-celeste-light);
+            color: var(--azul-celeste-dark);
+            padding: 15px 18px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--gris-borde);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .panol-table td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--gris-borde);
+            vertical-align: middle;
+        }
+
+        .panol-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* Columna del Recurso (con icono) */
+        .recurso-cell {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .recurso-icon {
+            color: var(--azul-celeste);
+            display: flex;
+            align-items: center;
+        }
+
+        /* Indicador de Estado */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background-color: #ecfdf5;
+            color: var(--verde-ok);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--verde-ok);
+            border-radius: 50%;
+        }
+
+        /* Grupo de botones de acciones por fila */
+        .actions-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* BOTÓN ACTUALIZAR (Azul Celeste) */
+        .btn-actualizar {
+            background-color: transparent;
+            border: 1px solid var(--azul-celeste);
+            color: var(--azul-celeste-dark);
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-actualizar:hover {
+            background-color: var(--azul-celeste);
+            color: var(--blanco);
+        }
+
+        /* BOTÓN ELIMINAR (Rojo) */
+        .btn-eliminar {
+            background-color: transparent;
+            border: 1px solid var(--rojo-del);
+            color: var(--rojo-del);
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .btn-eliminar:hover {
+            background-color: var(--rojo-del);
+            color: var(--blanco);
+        }
+
+        /* Estado Vacío dentro de la Tabla */
+        .table-empty {
+            text-align: center;
+            padding: 40px !important;
+            color: #64748b;
+        }
+
+        .table-empty-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .table-empty-icon {
+            color: var(--gris-borde);
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1e293b;
+            color: #94a3b8;
+            text-align: center;
+            padding: 20px;
+            font-size: 13px;
+            margin-top: auto;
+        }
+
+        footer strong {
+            color: var(--blanco);
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-simb">P</div>
+            <div class="logo-texto">Inventario<span>Pañol</span></div>
         </div>
-        <div>
-            <a href="{% url 'curso:curso_create' %}" class="btn-action-primary">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Registrar nuevo curso
+        <div class="user-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Encargado de Pañol
+        </div>
+    </header>
+
+    <main class="main-container">
+        
+        <div class="panel-header">
+            <div class="panel-info">
+                <h1>Gestión de Cursos</h1>
+                <p>Administrá los cursos del establecimiento con año y división.</p>
+            </div>
+            <a href="#" class="btn-agregar">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Agregar Nuevo Curso
             </a>
         </div>
-    </div>
 
-    <div class="content-card">
-        <div class="table-responsive">
-            <table class="custom-table">
+        <div class="table-container">
+            <table class="panol-table">
                 <thead>
                     <tr>
-                        <th style="width: 150px;">ID Sistema</th>
-                        <th>Año y División / Nombre del Curso</th>
-                        <th style="width: 250px; text-align: right;">Acciones de Gestión</th>
+                        <th>ID / Código</th>
+                        <th>Nombre del Curso</th>
+                        <th>Estado</th>
+                        <th style="width: 220px; text-align: center;">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% with lista_cursos=curso_list|default:cursos|default:object_list %}
-                        {% for curso in lista_cursos %}
-                            <tr>
-                                <td>
-                                    <span class="id-badge">#CRS-{{ curso.id|stringformat:"03d" }}</span>
-                                </td>
-                                <td>
-                                    <div class="curso-name-wrapper">
-                                        <div class="icon-avatar">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                                        </div>
-                                        <div class="curso-title">
-                                            {{ curso.nombre }}
-                                        </div>
+                    {% for curso in cursos %}
+                        <tr>
+                            <td style="color: #64748b; font-family: monospace; font-size: 13px;">#NET-00{{ forloop.counter }}</td>
+                            
+                            <td>
+                                <div class="recurso-cell">
+                                    <div class="recurso-icon">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="2" y1="20" x2="22" y2="20"/><line x1="12" y1="17" x2="12" y2="20"/></svg>
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="actions-cell">
-                                        <a href="{% url 'curso:curso_update' curso.id %}" class="btn-table-edit">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
-                                            Modificar
-                                        </a>
-                                        <a href="{% url 'curso:curso_delete' curso.id %}" class="btn-table-delete">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                            Remover
-                                        </a>
+                                    <span>{{ curso.nombre }}</span>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <div class="status-badge">
+                                    <span class="status-dot"></span> Activo
+                                </div>
+                            </td>
+                            
+                            <td style="text-align: center;">
+                                <div class="actions-group">
+                                    <a href="{% url 'curso:curso_update' curso.pk %}" class="btn-actualizar">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
+                                        Actualizar
+                                    </a>
+                                    <a href="{% url 'curso:curso_delete' curso.pk %}" class="btn-eliminar">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+                                        Eliminar
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="4" class="table-empty">
+                                <div class="table-empty-container">
+                                    <div class="table-empty-icon">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
                                     </div>
-                                </td>
-                            </tr>
-                        {% empty %}
-                            <tr>
-                                <td colspan="3">
-                                    <div class="empty-state">
-                                        <div class="empty-state-icon">
-                                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-                                        </div>
-                                        <p>No se encontraron cursos dados de alta en la base de datos del pañol.</p>
-                                        <a href="{% url 'curso:curso_create' %}" class="btn-action-primary">
-                                            Dar de alta el primer curso
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    {% endwith %}
+                                    <p>No hay cursos registrados en el sistema.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
-{% endblock %}
+    </main>
+
+    <footer>
+        <p>Sistema de Gestión de Recursos Tecnológicos &copy; 2026 - <strong>Conectividad Escolar</strong></p>
+    </footer>
+
+</body>
+</html>
