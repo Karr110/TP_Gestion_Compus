@@ -201,7 +201,7 @@
             <p>Visualizá, editá y registrá las distintas divisiones y años escolares del establecimiento.</p>
         </div>
         <div>
-            <a href="{% url 'curso_create' %}" class="btn-action-primary">
+            <a href="{% url 'curso:curso_create' %}" class="btn-action-primary">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                 Registrar nuevo curso
             </a>
@@ -237,11 +237,11 @@
                                 </td>
                                 <td>
                                     <div class="actions-cell">
-                                        <a href="{% url 'curso_update' curso.id %}" class="btn-table-edit">
+                                        <a href="{% url 'curso:curso_update' curso.id %}" class="btn-table-edit">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 1 1 3 3L12 15l-4 1 1-4Z"/></svg>
                                             Modificar
                                         </a>
-                                        <a href="{% url 'curso_delete' curso.id %}" class="btn-table-delete">
+                                        <a href="{% url 'curso:curso_delete' curso.id %}" class="btn-table-delete">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                                             Remover
                                         </a>
@@ -256,7 +256,7 @@
                                             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
                                         </div>
                                         <p>No se encontraron cursos dados de alta en la base de datos del pañol.</p>
-                                        <a href="{% url 'curso_create' %}" class="btn-action-primary">
+                                        <a href="{% url 'curso:curso_create' %}" class="btn-action-primary">
                                             Dar de alta el primer curso
                                         </a>
                                     </div>
